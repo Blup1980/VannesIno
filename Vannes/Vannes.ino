@@ -25,6 +25,7 @@
 #define CUSTOM                      // Custom mode
 #include "EtherCarConfigurator.h"
 #include "EasyCAT.h"                // EasyCAT library
+#include <Servo.h>
 
 #include <SPI.h>                    // SPI library - The EasyCAT shield is connected to the SPI bus
 
@@ -39,7 +40,11 @@ EasyCAT EASYCAT;                    // EasyCAT istantiation
                                     // 8, 9, 10 
                                     //  
                                     // for EasyCAT board REV_B we can choose between:
-                                    // 8, 9, 10, A5, 6, 7                                    
+                                    // 8, 9, 10, A5, 6, 7           
+
+
+
+Servo myservo;
 
 
 
@@ -76,7 +81,7 @@ bool Blink = true;
 void setup()
 {
 
-  pinMode(Pwm0, OUTPUT);                                          // PWM setting  
+  myservo.attach(3);  
   
 
   pinMode(BitIn0, INPUT_PULLUP);                                  // Digital inputs setting
@@ -161,9 +166,8 @@ void Application ()                                   // Here we manage the I/O 
     EASYCAT.BufferIn.Cust.SW8 = digitalRead(BitIn8);
 
 
-                                                        //------- 8 PWM outputs -------------------------------------------------
-                                                        //  
-    analogWrite (Pwm0, EASYCAT.BufferOut.Cust.PWM);      // Read the values from the EtherCAT buffer
+                                                        //------- servo outputs -------------------------------------------------
+    myservo.write(EASYCAT.BufferOut.Cust.PWM);
   
   
                                                         //------ HALT/RUN visualization ---------------------------------------
